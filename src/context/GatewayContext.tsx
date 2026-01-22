@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from 'react'
 import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
 
 interface GatewayState {
@@ -42,21 +49,21 @@ export const GatewayProvider = ({ children }: { children: ReactNode }) => {
     })
   }, [state.drawerPosition, state.triggerPosition, state.activeScenarioId])
 
-  const setIsOpen = (isOpen: boolean) => {
+  const setIsOpen = useCallback((isOpen: boolean) => {
     setState((prev) => ({ ...prev, isOpen }))
-  }
+  }, [])
 
-  const setDrawerPosition = (drawerPosition: 'left' | 'right') => {
+  const setDrawerPosition = useCallback((drawerPosition: 'left' | 'right') => {
     setState((prev) => ({ ...prev, drawerPosition }))
-  }
+  }, [])
 
-  const setTriggerPosition = (triggerPosition: 'left' | 'right') => {
+  const setTriggerPosition = useCallback((triggerPosition: 'left' | 'right') => {
     setState((prev) => ({ ...prev, triggerPosition }))
-  }
+  }, [])
 
-  const setActiveScenarioId = (activeScenarioId: string | null) => {
+  const setActiveScenarioId = useCallback((activeScenarioId: string | null) => {
     setState((prev) => ({ ...prev, activeScenarioId }))
-  }
+  }, [])
 
   return (
     <GatewayContext.Provider

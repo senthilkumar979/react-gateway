@@ -38,9 +38,13 @@ const GatewayContent = ({
   const { settings } = useSettings()
 
   useEffect(() => {
-    setDrawerPosition(settings.position)
-    setTriggerPosition(settings.position)
-  }, [settings.position, setDrawerPosition, setTriggerPosition])
+    if (state.drawerPosition !== settings.position) {
+      setDrawerPosition(settings.position)
+    }
+    if (state.triggerPosition !== settings.position) {
+      setTriggerPosition(settings.position)
+    }
+  }, [settings.position, state.drawerPosition, state.triggerPosition, setDrawerPosition, setTriggerPosition])
 
   useEffect(() => {
     initializeTimeManipulation()
