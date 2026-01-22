@@ -1,0 +1,127 @@
+// Override Bootstrap primary color
+$primary: #00965e;
+
+@import 'bootstrap/scss/bootstrap';
+
+.gateway-trigger {
+  z-index: 9999;
+}
+
+.btn-primary, .btn-check:checked + .btn{
+  color: #fff !important;
+}
+
+.offcanvas {
+  width: 650px !important;
+}
+
+// Settings Section Styles
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.settings-group {
+  padding: 1.25rem 0;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.settings-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #212529;
+}
+
+.settings-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #dee2e6 20%,
+    #dee2e6 80%,
+    transparent
+  );
+  margin: 0.5rem 0;
+}
+
+// Modern Accordion Styles
+.accordion-item-modern {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.accordion-item-modern:hover {
+  border-color: #00965e;
+  box-shadow: 0 2px 8px rgba(0, 150, 94, 0.1);
+}
+
+.accordion-header-modern {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+
+  &[data-open="true"] {
+    background: #00965e;
+
+    span{
+      color: #fff !important;
+    }
+  }
+
+  &:focus {
+    outline: 2px solid #00965e;
+    outline-offset: -2px;
+  }
+}
+
+.accordion-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #212529;
+  letter-spacing: -0.01em;
+}
+
+.accordion-icon {
+  color: #6c757d;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+  .accordion-icon.open {
+    transform: rotate(180deg);
+    color: #fff;
+  }
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 1.25rem;
+}
+
+.accordion-content.open {
+  max-height: 5000px;
+  padding: 0 1.25rem 1.25rem;
+}
+
+.accordion-body-modern {
+  padding-top: 1rem;
+}

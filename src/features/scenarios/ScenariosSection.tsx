@@ -1,0 +1,110 @@
+import { AccordionSection } from '@/components/AccordionSection'
+import { useGateway } from '@/context/GatewayContext'
+import { useScenarios } from '@/context/ScenariosContext'
+import type { Scenario } from '@/types/scenarios.types'
+import { useState } from 'react'
+import { ScenarioDropdown } from './ScenarioDropdown'
+import { ScenarioForm } from './ScenarioForm'
+
+export const ScenariosSection = () => {
+  const {
+    scenarios,
+    addScenario,
+    updateScenario,
+    deleteScenario,
+  } = useScenarios()
+  const { state, setActiveScenarioId } = useGateway()
+  const [editingScenario, setEditingScenario] = useState<Scenario | null>(null)
+  const [showForm, setShowForm] = useState(false)
+
+  const handleSave = (
+    scenarioData: Omit<Scenario, 'id' | 'createdAt' | 'updatedAt'>,
+  ) => {
+    if (editingScenario) {
+      updateScenario(editingScenario.id, scenarioData)
+      setEditingScenario(null)
+    } else {
+      addScenario(scenarioData)
+    }
+    setShowForm(false)
+  }
+
+  const handleSelect = (scenarioId: string | null) => {
+    setActiveScenarioId(scenarioId)
+  }
+
+  const handleEdit = (scenario: Scenario) => {
+    setEditingScenario(scenario)
+    setShowForm(true)
+  }
+
+  return (
+    <AccordionSection title="Scenarios" defaultOpen={true}>
+      <div className="mb-3">
+        <ScenarioDropdown
+          scenarios={scenarios}
+          selectedId={state.activeScenarioId}
+          onSelect={handleSelect}
+        />
+      </div>
+      <div className="mb-3">
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={() => {
+            setEditingScenario(null)
+            setShowForm(true)
+          }}
+        >
+          Create Scenario
+        </button>
+      </div>
+      {scenarios.length > 0 && (
+        <div className="mb-3">
+          <h6>Existing Scenarios</h6>
+          <div className="list-group">
+            {scenarios.map((scenario) => (
+              <div key={scenario.id} className="list-group-item">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{scenario.name}</strong>
+                    {scenario.description && (
+                      <div className="small text-muted">
+                        {scenario.description}
+                      </div>
+                    )}
+                  </div>
+                  <div className="d-flex gap-2">
+                    <button
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={() => handleEdit(scenario)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => deleteScenario(scenario.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {showForm && (
+        <div className="mb-3">
+          <ScenarioForm
+            scenario={editingScenario}
+            onSave={handleSave}
+            onCancel={() => {
+              setShowForm(false)
+              setEditingScenario(null)
+            }}
+          />
+        </div>
+      )}
+    </AccordionSection>
+  )
+}
