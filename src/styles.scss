@@ -7,7 +7,8 @@ $primary: #00965e;
   z-index: 9999;
 }
 
-.btn-primary, .btn-check:checked + .btn{
+.btn-primary,
+.btn-check:checked + .btn {
   color: #fff !important;
 }
 
@@ -78,11 +79,16 @@ $primary: #00965e;
   transition: all 0.2s ease;
   text-align: left;
 
-  &[data-open="true"] {
-    background: #00965e;
+  &[data-open='true'] {
+    background: $primary;
 
-    span{
+    div {
       color: #fff !important;
+    }
+
+    span {
+      color: #fff !important;
+      opacity: 0.6 !important;
     }
   }
 
@@ -97,6 +103,9 @@ $primary: #00965e;
   font-size: 0.95rem;
   color: #212529;
   letter-spacing: -0.01em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .accordion-icon {
@@ -105,10 +114,10 @@ $primary: #00965e;
   flex-shrink: 0;
 }
 
-  .accordion-icon.open {
-    transform: rotate(180deg);
-    color: #fff;
-  }
+.accordion-icon.open {
+  transform: rotate(180deg);
+  color: #fff;
+}
 
 .accordion-content {
   max-height: 0;
@@ -124,4 +133,39 @@ $primary: #00965e;
 
 .accordion-body-modern {
   padding-top: 1rem;
+}
+
+.primary-icon {
+  color: $primary;
+}
+
+.btn-outline-primary:hover {
+  color: #fff !important;
+  svg {
+    color: #fff !important;
+  }
+}
+
+.btn-outline-secondary:hover {
+  svg {
+    color: #fff !important;
+  }
+}
+
+.bg-success.active {
+  color: $primary !important;
+  font-weight: 600 !important;
+
+  span::before {
+    content: '✓';
+    margin-right: 0.5rem;
+  }
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.15rem rgba(0, 150, 94, 0.25);
+}
+
+input::placeholder {
+  font-size: 0.875rem;
 }

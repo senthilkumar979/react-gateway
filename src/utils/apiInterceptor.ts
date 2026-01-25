@@ -1,4 +1,4 @@
-import type { Scenario, RequestConfig } from '@/types/scenarios.types'
+import type { Scenario, RequestConfig } from '@/types/Scenarios.types'
 
 let originalFetch: typeof fetch
 let originalAxios: any

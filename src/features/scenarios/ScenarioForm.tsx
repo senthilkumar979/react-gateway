@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import type { Scenario, RequestConfig } from '@/types/scenarios.types'
+import type { Scenario, RequestConfig } from '@/types/Scenarios.types'
 import { RequestConfigForm } from './RequestConfigForm'
 import { FormLabel } from '@/ui/FormLabel'
 
@@ -9,7 +9,11 @@ interface ScenarioFormProps {
   onCancel: () => void
 }
 
-export const ScenarioForm = ({ scenario, onSave, onCancel }: ScenarioFormProps) => {
+export const ScenarioForm = ({
+  scenario,
+  onSave,
+  onCancel,
+}: ScenarioFormProps) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [requests, setRequests] = useState<RequestConfig[]>([])
@@ -52,7 +56,9 @@ export const ScenarioForm = ({ scenario, onSave, onCancel }: ScenarioFormProps) 
   }
 
   const updateRequest = (index: number, updates: Partial<RequestConfig>) => {
-    setRequests(requests.map((req, i) => (i === index ? { ...req, ...updates } : req)))
+    setRequests(
+      requests.map((req, i) => (i === index ? { ...req, ...updates } : req)),
+    )
   }
 
   const removeRequest = (index: number) => {
@@ -75,7 +81,10 @@ export const ScenarioForm = ({ scenario, onSave, onCancel }: ScenarioFormProps) 
         />
       </div>
       <div className="mb-3">
-        <FormLabel htmlFor="scenario-description" description="Optional description for this scenario">
+        <FormLabel
+          htmlFor="scenario-description"
+          description="Optional description for this scenario"
+        >
           Description
         </FormLabel>
         <textarea
@@ -91,7 +100,11 @@ export const ScenarioForm = ({ scenario, onSave, onCancel }: ScenarioFormProps) 
           <FormLabel description="Configure API requests to intercept and manipulate">
             API Requests
           </FormLabel>
-          <button type="button" className="btn btn-sm btn-outline-primary" onClick={addRequest}>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary"
+            onClick={addRequest}
+          >
             Add Request
           </button>
         </div>
@@ -105,7 +118,9 @@ export const ScenarioForm = ({ scenario, onSave, onCancel }: ScenarioFormProps) 
           />
         ))}
         {requests.length === 0 && (
-          <p className="text-muted small">No requests configured. Click "Add Request" to start.</p>
+          <p className="text-muted small">
+            No requests configured. Click "Add Request" to start.
+          </p>
         )}
       </div>
       <div className="d-flex gap-2">
@@ -113,7 +128,11 @@ export const ScenarioForm = ({ scenario, onSave, onCancel }: ScenarioFormProps) 
           {scenario ? 'Update' : 'Create'} Scenario
         </button>
         {scenario && (
-          <button type="button" className="btn btn-secondary" onClick={onCancel}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={onCancel}
+          >
             Cancel
           </button>
         )}

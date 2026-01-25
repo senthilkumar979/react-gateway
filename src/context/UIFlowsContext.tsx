@@ -1,6 +1,13 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from 'react'
 import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
-import type { UIFlow } from '@/types/uiFlows.types'
+import type { UIFlow } from '@/types/UiFlows.types'
 
 interface UIFlowsContextValue {
   flows: UIFlow[]
@@ -8,6 +15,9 @@ interface UIFlowsContextValue {
   updateFlow: (id: string, flow: Partial<UIFlow>) => void
   deleteFlow: (id: string) => void
   getFlow: (id: string) => UIFlow | undefined
+  isRecording: boolean
+  setIsRecording: (isRecording: boolean) => void
+  stopRecording: () => void
 }
 
 const UIFlowsContext = createContext<UIFlowsContextValue | undefined>(undefined)
@@ -17,9 +27,19 @@ export const UIFlowsProvider = ({ children }: { children: ReactNode }) => {
     return loadFromLocalStorage<UIFlow[]>('uiFlows', [])
   })
 
+  const [isRecording, setIsRecording] = useState(false)
+
   useEffect(() => {
     saveToLocalStorage('uiFlows', flows)
   }, [flows])
+
+  const setIsRecordingState = useCallback((value: boolean) => {
+    setIsRecording(value)
+  }, [])
+
+  const stopRecording = useCallback(() => {
+    setIsRecording(false)
+  }, [])
 
   const addFlow = (flowData: Omit<UIFlow, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newFlow: UIFlow = {
@@ -55,6 +75,9 @@ export const UIFlowsProvider = ({ children }: { children: ReactNode }) => {
         updateFlow,
         deleteFlow,
         getFlow,
+        isRecording,
+        setIsRecording: setIsRecordingState,
+        stopRecording,
       }}
     >
       {children}

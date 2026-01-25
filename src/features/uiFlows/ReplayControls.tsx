@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { UIFlow } from '@/types/uiFlows.types'
+import type { UIFlow } from '@/types/UiFlows.types'
 
 interface ReplayControlsProps {
   flow: UIFlow
@@ -42,7 +42,9 @@ export const ReplayControls = ({
 
       if (i < flow.events.length - 1) {
         const delay = flow.events[i + 1].timestamp - event.timestamp
-        await new Promise((resolve) => setTimeout(resolve, Math.min(delay, 1000)))
+        await new Promise((resolve) =>
+          setTimeout(resolve, Math.min(delay, 1000)),
+        )
       }
     }
 

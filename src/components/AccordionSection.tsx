@@ -5,9 +5,10 @@ interface AccordionSectionProps {
   title: string
   children: ReactNode
   defaultOpen?: boolean
+  description?: string
 }
 
-export const AccordionSection = ({ title, children, defaultOpen = false }: AccordionSectionProps) => {
+export const AccordionSection = ({ title, description, children, defaultOpen = false }: AccordionSectionProps) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
 
   return (
@@ -19,7 +20,9 @@ export const AccordionSection = ({ title, children, defaultOpen = false }: Accor
         aria-expanded={isOpen}
         data-open={isOpen}
       >
-        <span className="accordion-title">{title}</span>
+        <div className="accordion-title">{title}
+          {description && <small className="text-muted text-white">{description}</small>}
+        </div>
         <IconChevronDown className={`accordion-icon ${isOpen ? 'open' : ''}`} />
       </button>
       <div className={`accordion-content ${isOpen ? 'open' : ''}`}>

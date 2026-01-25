@@ -8,8 +8,5 @@ export interface Settings {
     enabled: boolean
     offsetDays: number
   }
-  chaos: {
-    enabled: boolean
-    throwError: boolean
-  }
+  chaos: boolean
 }

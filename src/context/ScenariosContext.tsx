@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
-import type { Scenario } from '@/types/scenarios.types'
+import type { Scenario } from '@/types/Scenarios.types'
 
 interface ScenariosContextValue {
   scenarios: Scenario[]

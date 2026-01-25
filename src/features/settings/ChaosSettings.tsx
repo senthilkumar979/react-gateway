@@ -1,66 +1,68 @@
-import type { Settings } from '@/types/settings.types'
 import { FormLabel } from '@/ui/FormLabel'
+import { Button } from 'react-bootstrap'
+import { IconBug } from '../../assets/IconBug'
+import { useSettings } from '../../context/SettingsContext'
 
-interface ChaosSettingsProps {
-  chaos: Settings['chaos']
-  onUpdate: (chaos: Settings['chaos']) => void
-}
+export const ChaosSettings = () => {
+  const { updateSettings } = useSettings()
 
-export const ChaosSettings = ({ chaos, onUpdate }: ChaosSettingsProps) => {
+  const handleThrowErrorInComponent = () => {
+    updateSettings({ chaos: true });
+    setTimeout(() => {
+      updateSettings({ chaos: false })
+    }, 1000)
+  }
+
+  const handleThrowErrorInConsole = () => {
+    throw new Error('Error in console')
+  }
+
   return (
     <div>
-      <div className="d-flex align-items-center justify-content-between mb-3">
-        <div className="flex-grow-1">
-          <FormLabel
-            isHideSpaceBelow
-            description="Test error handling and edge cases in your application"
-          >
-            Enable Chaos Mode
-          </FormLabel>
-        </div>
-        <div className="form-check form-switch ms-3">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            checked={chaos.enabled}
-            onChange={(e) =>
-              onUpdate({
-                ...chaos,
-                enabled: e.target.checked,
-              })
-            }
-          />
-        </div>
-      </div>
-      {chaos.enabled && (
-        <div className="ps-5">
-          <div className="mt-3 ps-3 border-start border-2 border-primary">
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="flex-grow-1">
-                <FormLabel
-                  isHideSpaceBelow
-                  description="Wrap components with ChaosBoundary to test error boundaries"
-                >
-                  Throw Error in Component
-                </FormLabel>
-              </div>
-              <div className="form-check form-switch ms-3">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  checked={chaos.throwError}
-                  onChange={(e) =>
-                    onUpdate({
-                      ...chaos,
-                      throwError: e.target.checked,
-                    })
-                  }
-                />
-              </div>
+      <div className="ps-1">
+        <div className="mt-3 ps-3 border-start border-2 border-primary">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="flex-grow-1">
+              <FormLabel
+                isHideSpaceBelow
+                description="Test error boundaries in your application by reading a non-existent property of an object inside a component render"
+              >
+                Throw Error in Component
+              </FormLabel>
+            </div>
+            <div className="form-check form-switch ms-3">
+              <Button
+                size="sm"
+                variant="outline-primary"
+                onClick={handleThrowErrorInComponent}
+              >
+                <IconBug width={16} height={16} />
+              </Button>
             </div>
           </div>
         </div>
-      )}
+        <div className="mt-3 ps-3 border-start border-2 border-primary">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="flex-grow-1">
+              <FormLabel
+                isHideSpaceBelow
+                description="Throw an error in your application by reading a non-existent property of an object inside a method"
+              >
+                Throw Error in console
+              </FormLabel>
+            </div>
+            <div className="form-check form-switch ms-3">
+              <Button
+                size="sm"
+                variant="outline-primary"
+                onClick={handleThrowErrorInConsole}
+              >
+                <IconBug width={16} height={16} />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

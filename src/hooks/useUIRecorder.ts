@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getElementSelector } from '@/utils/selectorUtils'
-import type { UIEvent } from '@/types/uiFlows.types'
+import { useUIFlows } from '@/context/UIFlowsContext'
+import type { UIEvent } from '@/types/UiFlows.types'
 
 interface UseUIRecorderReturn {
   isRecording: boolean
@@ -13,7 +14,7 @@ interface UseUIRecorderReturn {
 }
 
 export const useUIRecorder = (): UseUIRecorderReturn => {
-  const [isRecording, setIsRecording] = useState(false)
+  const { isRecording, setIsRecording, stopRecording: contextStopRecording } = useUIFlows()
   const [isPaused, setIsPaused] = useState(false)
   const [events, setEvents] = useState<UIEvent[]>([])
 
@@ -69,8 +70,8 @@ export const useUIRecorder = (): UseUIRecorderReturn => {
   }
 
   const stopRecording = () => {
-    setIsRecording(false)
     setIsPaused(false)
+    contextStopRecording()
   }
 
   const pauseRecording = () => {

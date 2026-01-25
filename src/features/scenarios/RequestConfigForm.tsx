@@ -1,4 +1,4 @@
-import type { RequestConfig } from '@/types/scenarios.types'
+import type { RequestConfig } from '@/types/Scenarios.types'
 import { FormLabel } from '@/ui/FormLabel'
 
 interface RequestConfigFormProps {
@@ -8,7 +8,12 @@ interface RequestConfigFormProps {
   index?: number
 }
 
-export const RequestConfigForm = ({ request, onUpdate, onRemove, index = 0 }: RequestConfigFormProps) => {
+export const RequestConfigForm = ({
+  request,
+  onUpdate,
+  onRemove,
+  index = 0,
+}: RequestConfigFormProps) => {
   const prefix = `request-${index}`
   return (
     <div className="card mb-3">
@@ -23,12 +28,19 @@ export const RequestConfigForm = ({ request, onUpdate, onRemove, index = 0 }: Re
             />
             <label className="form-check-label">Active</label>
           </div>
-          <button type="button" className="btn btn-sm btn-outline-danger" onClick={onRemove}>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-danger"
+            onClick={onRemove}
+          >
             Remove
           </button>
         </div>
         <div className="mb-2">
-          <FormLabel htmlFor={`${prefix}-name`} description="A descriptive name for this request">
+          <FormLabel
+            htmlFor={`${prefix}-name`}
+            description="A descriptive name for this request"
+          >
             Request Name
           </FormLabel>
           <input
@@ -59,7 +71,10 @@ export const RequestConfigForm = ({ request, onUpdate, onRemove, index = 0 }: Re
         </div>
         <div className="row mb-2">
           <div className="col-md-6">
-            <FormLabel htmlFor={`${prefix}-status`} description="HTTP status code to return">
+            <FormLabel
+              htmlFor={`${prefix}-status`}
+              description="HTTP status code to return"
+            >
               Status Code
             </FormLabel>
             <input
@@ -72,7 +87,10 @@ export const RequestConfigForm = ({ request, onUpdate, onRemove, index = 0 }: Re
             />
           </div>
           <div className="col-md-6">
-            <FormLabel htmlFor={`${prefix}-delay`} description="Delay before returning response">
+            <FormLabel
+              htmlFor={`${prefix}-delay`}
+              description="Delay before returning response"
+            >
               Delay (ms)
             </FormLabel>
             <input
@@ -80,7 +98,9 @@ export const RequestConfigForm = ({ request, onUpdate, onRemove, index = 0 }: Re
               type="number"
               className="form-control form-control-sm"
               value={request.delayInMs}
-              onChange={(e) => onUpdate({ delayInMs: parseInt(e.target.value, 10) || 0 })}
+              onChange={(e) =>
+                onUpdate({ delayInMs: parseInt(e.target.value, 10) || 0 })
+              }
               min="0"
             />
           </div>

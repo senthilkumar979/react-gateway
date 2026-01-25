@@ -1,10 +1,10 @@
-interface IconInfoCircleProps {
-  width?: number
-  height?: number
-  className?: string
-}
+import { IconBaseProps } from '../types/Icon.types'
 
-export const IconInfoCircle = ({ width = 18, height = 18, className = 'text-primary' }: IconInfoCircleProps) => {
+export const IconInfoCircle = ({
+  width = 18,
+  height = 18,
+  className = 'text-primary',
+}: IconBaseProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

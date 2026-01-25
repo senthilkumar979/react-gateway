@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
-import type { Settings } from '@/types/settings.types'
+import type { Settings } from '@/types/Settings.types'
 
 interface SettingsContextValue {
   settings: Settings
@@ -17,10 +17,7 @@ const defaultSettings: Settings = {
     enabled: false,
     offsetDays: 0,
   },
-  chaos: {
-    enabled: false,
-    throwError: false,
-  },
+  chaos: false
 }
 
 const SettingsContext = createContext<SettingsContextValue | undefined>(undefined)

@@ -1,4 +1,4 @@
-import type { Settings } from '@/types/settings.types'
+import type { Settings } from '@/types/Settings.types'
 import { FormLabel } from '@/ui/FormLabel'
 
 interface TimeSettingsProps {

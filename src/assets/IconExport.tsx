@@ -1,43 +1,25 @@
-interface IconExportProps {
-  width?: number
-  height?: number
-  className?: string
-}
+import { IconBaseProps } from '../types/Icon.types'
 
 export const IconExport = ({
   width = 18,
   height = 18,
-  className = 'text-primary',
-}: IconExportProps) => {
+  className = '',
+}: IconBaseProps) => {
   return (
     <svg
+      className={className}
       width={width}
       height={height}
-      viewBox="0 0 24 24"
-      fill="none"
+      aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      fill="currentColor"
+      viewBox="0 0 24 24"
     >
-      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-      <g
-        id="SVGRepo_tracerCarrier"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      ></g>
-      <g id="SVGRepo_iconCarrier">
-        {' '}
-        <path
-          opacity="0.5"
-          d="M4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12L4 12Z"
-          fill="#1C274C"
-        ></path>{' '}
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M15.5303 7.53033C15.2374 7.82322 14.7626 7.82322 14.4697 7.53033L12.75 5.81066L12.75 14C12.75 14.4142 12.4142 14.75 12 14.75C11.5858 14.75 11.25 14.4142 11.25 14L11.25 5.81066L9.53033 7.53033C9.23744 7.82322 8.76256 7.82322 8.46967 7.53033C8.17678 7.23744 8.17678 6.76256 8.46967 6.46967L11.4697 3.46967C11.7626 3.17678 12.2374 3.17678 12.5303 3.46967L15.5303 6.46967C15.8232 6.76256 15.8232 7.23744 15.5303 7.53033Z"
-          fill="#1C274C"
-        ></path>{' '}
-      </g>
+      <path
+        fillRule="evenodd"
+        d="M12 3a1 1 0 0 1 .78.375l4 5a1 1 0 1 1-1.56 1.25L13 6.85V14a1 1 0 1 1-2 0V6.85L8.78 9.626a1 1 0 1 1-1.56-1.25l4-5A1 1 0 0 1 12 3ZM9 14v-1H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-4v1a3 3 0 1 1-6 0Zm8 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z"
+        clipRule="evenodd"
+      />
     </svg>
   )
 }

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
-import type { Snapshot } from '@/types/snapshots.types'
+import type { Snapshot } from '@/types/Snapshots.types'
 
 interface SnapshotsContextValue {
   snapshots: Snapshot[]

@@ -1,7 +1,7 @@
 import { AccordionSection } from '@/components/AccordionSection'
 import { useGateway } from '@/context/GatewayContext'
 import { useScenarios } from '@/context/ScenariosContext'
-import type { Scenario } from '@/types/scenarios.types'
+import type { Scenario } from '@/types/Scenarios.types'
 import { useState } from 'react'
 import { ScenarioDropdown } from './ScenarioDropdown'
 import { ScenarioForm } from './ScenarioForm'
@@ -39,7 +39,11 @@ export const ScenariosSection = () => {
   }
 
   return (
-    <AccordionSection title="Scenarios" defaultOpen={true}>
+    <AccordionSection
+      title="Scenarios"
+      description="Create and manage API response scenarios to simulate different backend behaviors"
+      defaultOpen={true}
+    >
       <div className="mb-3">
         <ScenarioDropdown
           scenarios={scenarios}

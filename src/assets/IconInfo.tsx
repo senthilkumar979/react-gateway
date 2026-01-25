@@ -1,10 +1,10 @@
-interface IconInfoProps {
-  width?: number
-  height?: number
-  className?: string
-}
+import { IconBaseProps } from '../types/Icon.types'
 
-export const IconInfo = ({ width = 12, height = 12, className = '' }: IconInfoProps) => {
+export const IconInfo = ({
+  width = 12,
+  height = 12,
+  className = '',
+}: IconBaseProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

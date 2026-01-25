@@ -1,14 +1,10 @@
-interface IconClockProps {
-  width?: number
-  height?: number
-  className?: string
-}
+import { IconBaseProps } from '../types/Icon.types'
 
 export const IconClock = ({
   width = 18,
   height = 18,
   className = 'text-primary',
-}: IconClockProps) => {
+}: IconBaseProps) => {
   return (
     <svg
       width={width}

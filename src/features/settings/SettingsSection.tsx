@@ -1,10 +1,8 @@
 import { IconClock } from '@/assets/IconClock'
-import { IconInfoCircle } from '@/assets/IconInfoCircle'
 import { IconPlus } from '@/assets/IconPlus'
 import { AccordionSection } from '@/components/AccordionSection'
 import { useGateway } from '@/context/GatewayContext'
 import { useSettings } from '@/context/SettingsContext'
-import { ChaosSettings } from './ChaosSettings'
 import { PositionSettings } from './PositionSettings'
 import { TimeSettings } from './TimeSettings'
 
@@ -19,7 +17,10 @@ export const SettingsSection = () => {
   }
 
   return (
-    <AccordionSection title="General Settings">
+    <AccordionSection
+      title="General Settings"
+      description="Configure dev tool position and time manipulation settings"
+    >
       <div className="settings-container">
         <div className="settings-group">
           <div className="settings-header">
@@ -43,19 +44,6 @@ export const SettingsSection = () => {
             timeFreeze={settings.timeFreeze}
             timeOffset={settings.timeOffset}
             onUpdate={(updates) => updateSettings(updates)}
-          />
-        </div>
-
-        <div className="settings-divider"></div>
-
-        <div className="settings-group">
-          <div className="settings-header">
-            <IconInfoCircle />
-            <span className="settings-title">Chaos Testing</span>
-          </div>
-          <ChaosSettings
-            chaos={settings.chaos}
-            onUpdate={(chaos) => updateSettings({ chaos })}
           />
         </div>
       </div>

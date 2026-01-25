@@ -4,7 +4,7 @@ export { GatewayErrorBoundary } from './features/errorBoundary/GatewayErrorBound
 export { useRenderTracking } from './hooks/useRenderTracking'
 
 export type { ReactGatewayProps } from './types/ReactGateway.types'
-export type { Scenario, RequestConfig } from './types/scenarios.types'
-export type { Snapshot } from './types/snapshots.types'
-export type { Settings } from './types/settings.types'
-export type { UIFlow, UIEvent } from './types/uiFlows.types'
+export type { Scenario, RequestConfig } from './types/Scenarios.types'
+export type { Snapshot } from './types/Snapshots.types'
+export type { Settings } from './types/Settings.types'
+export type { UIFlow, UIEvent } from './types/UiFlows.types'

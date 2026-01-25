@@ -1,12 +1,15 @@
 import { useRef } from 'react'
-import type { UIFlow } from '@/types/uiFlows.types'
+import type { UIFlow } from '@/types/UiFlows.types'
 
 interface ImportExportButtonsProps {
   flows: UIFlow[]
   onImport: (flows: UIFlow[]) => void
 }
 
-export const ImportExportButtons = ({ flows, onImport }: ImportExportButtonsProps) => {
+export const ImportExportButtons = ({
+  flows,
+  onImport,
+}: ImportExportButtonsProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleExport = () => {
@@ -45,10 +48,18 @@ export const ImportExportButtons = ({ flows, onImport }: ImportExportButtonsProp
 
   return (
     <div className="d-flex gap-2">
-      <button type="button" className="btn btn-sm btn-outline-primary" onClick={handleExport}>
+      <button
+        type="button"
+        className="btn btn-sm btn-outline-primary"
+        onClick={handleExport}
+      >
         Export Flows
       </button>
-      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={handleImport}>
+      <button
+        type="button"
+        className="btn btn-sm btn-outline-secondary"
+        onClick={handleImport}
+      >
         Import Flows
       </button>
       <input

@@ -24,7 +24,10 @@ export const UIFlowsSection = () => {
   }
 
   return (
-    <AccordionSection title="Record UI Flows and Replay">
+    <AccordionSection
+      title="Record UI Flows and Replay"
+      description="Record user interactions and replay them to test UI flows and user journeys"
+    >
       <RecordingControls
         isRecording={isRecording}
         onStart={startRecording}

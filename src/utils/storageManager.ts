@@ -1,4 +1,4 @@
-import type { Snapshot } from '@/types/snapshots.types'
+import type { Snapshot } from '@/types/Snapshots.types'
 
 export const captureLocalStorage = (): Record<string, string> => {
   const storage: Record<string, string> = {}

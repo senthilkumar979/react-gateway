@@ -1,3 +1,4 @@
+import { ActiveStatusCard } from '@/components/ActiveStatusCard'
 import { GatewayDrawer } from '@/components/GatewayDrawer'
 import { GatewayTrigger } from '@/components/GatewayTrigger'
 import { GatewayProvider, useGateway } from '@/context/GatewayContext'
@@ -6,6 +7,7 @@ import { ScenariosProvider, useScenarios } from '@/context/ScenariosContext'
 import { SettingsProvider, useSettings } from '@/context/SettingsContext'
 import { SnapshotsProvider, useSnapshots } from '@/context/SnapshotsContext'
 import { UIFlowsProvider } from '@/context/UIFlowsContext'
+import { ChaosTestingSection } from '@/features/chaosTesting/ChaosTestingSection'
 import { PersonasSection } from '@/features/personas/PersonasSection'
 import { RenderAnalyzerSection } from '@/features/renderAnalyzer/RenderAnalyzerSection'
 import { ScenariosSection } from '@/features/scenarios/ScenariosSection'
@@ -23,14 +25,13 @@ import {
 } from '@/utils/timeFreeze'
 import { useEffect } from 'react'
 import { Accordion } from 'react-bootstrap'
-import { ErrorBoundary } from 'react-error-boundary'
-import { GenericError } from './components/GenericError'
+import { GatewayErrorBoundary } from './features/errorBoundary/GatewayErrorBoundary'
 
 const GatewayContent = ({
   clientApp,
   onSnapshotChange,
   scenarioComponent,
-  fallbackComponent,
+  costAnalyzerComponent,
 }: ReactGatewayProps) => {
   const { state, setDrawerPosition, setTriggerPosition } = useGateway()
   const { getScenario } = useScenarios()
@@ -44,7 +45,13 @@ const GatewayContent = ({
     if (state.triggerPosition !== settings.position) {
       setTriggerPosition(settings.position)
     }
-  }, [settings.position, state.drawerPosition, state.triggerPosition, setDrawerPosition, setTriggerPosition])
+  }, [
+    settings.position,
+    state.drawerPosition,
+    state.triggerPosition,
+    setDrawerPosition,
+    setTriggerPosition,
+  ])
 
   useEffect(() => {
     initializeTimeManipulation()
@@ -89,20 +96,26 @@ const GatewayContent = ({
 
   return (
     <>
-      <ErrorBoundary FallbackComponent={fallbackComponent ?? GenericError}>
-        {clientApp}
-      </ErrorBoundary>
-      <GatewayTrigger />
-      <GatewayDrawer>
-        <Accordion defaultActiveKey="scenarios" id="gateway-accordion">
-          <ScenariosSection />
-          <SnapshotsSection />
-          <SettingsSection />
-          <RenderAnalyzerSection />
-          <UIFlowsSection />
-          <PersonasSection scenarioComponent={scenarioComponent} />
-        </Accordion>
-      </GatewayDrawer>
+      {clientApp}
+      <GatewayErrorBoundary>
+        <GatewayTrigger />
+        <GatewayDrawer>
+          <ActiveStatusCard />
+          <Accordion defaultActiveKey="scenarios" id="gateway-accordion">
+            <ScenariosSection />
+            <SnapshotsSection />
+            <SettingsSection />
+            <ChaosTestingSection />
+            <RenderAnalyzerSection costAnalyzerComponent={costAnalyzerComponent} />
+            <UIFlowsSection />
+            <PersonasSection scenarioComponent={scenarioComponent} />
+          </Accordion>
+          {settings.chaos &&
+            (() => {
+              throw new Error('personaName is not defined')
+            })()}
+        </GatewayDrawer>
+      </GatewayErrorBoundary>
     </>
   )
 }

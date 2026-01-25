@@ -1,10 +1,10 @@
-interface IconGridProps {
-  width?: number
-  height?: number
-  className?: string
-}
+import { IconBaseProps } from '../types/Icon.types'
 
-export const IconGrid = ({ width = 24, height = 24, className = '' }: IconGridProps) => {
+export const IconGrid = ({
+  width = 24,
+  height = 24,
+  className = '',
+}: IconBaseProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,4 @@
-import type { Scenario } from '@/types/scenarios.types'
+import type { Scenario } from '@/types/Scenarios.types'
 import { FormLabel } from '@/ui/FormLabel'
 import { useScenarios } from '../../context/ScenariosContext'
 import { ImportExportButtons } from './ImportExportButtons'

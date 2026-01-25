@@ -1,4 +1,4 @@
-import type { Scenario } from '@/types/scenarios.types'
+import type { Scenario } from '@/types/Scenarios.types'
 import { useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { IconExport } from '../../assets/IconExport'
@@ -54,14 +54,6 @@ export const ImportExportButtons = ({
       <Button
         type="button"
         variant="outline-primary"
-        onClick={handleExport}
-        title="Export Scenarios"
-      >
-        <IconExport />
-      </Button>
-      <Button
-        type="button"
-        variant="outline-secondary"
         onClick={handleImport}
         title="Import Scenarios"
       >
@@ -74,6 +66,14 @@ export const ImportExportButtons = ({
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
+      <Button
+        type="button"
+        variant="outline-secondary"
+        onClick={handleExport}
+        title="Export Scenarios"
+      >
+        <IconExport />
+      </Button>
     </div>
   )
 }

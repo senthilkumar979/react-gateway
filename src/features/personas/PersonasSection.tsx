@@ -8,7 +8,10 @@ interface PersonasSectionProps {
 export const PersonasSection = ({ scenarioComponent }: PersonasSectionProps) => {
   if (!scenarioComponent) {
     return (
-      <AccordionSection title="Persona Based Component Check">
+      <AccordionSection
+        title="Persona Based Component Check"
+        description="Test components with different user personas and scenarios"
+      >
         <p className="text-muted small">
           No scenario component provided. Pass scenarioComponent prop to ReactGateway to use this
           feature.
@@ -18,7 +21,10 @@ export const PersonasSection = ({ scenarioComponent }: PersonasSectionProps) => 
   }
 
   return (
-    <AccordionSection title="Persona Based Component Check">
+    <AccordionSection
+      title="Persona Based Component Check"
+      description="Test components with different user personas and scenarios"
+    >
       <ScenarioGrid scenarioComponent={scenarioComponent} />
     </AccordionSection>
   )

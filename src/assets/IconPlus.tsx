@@ -1,14 +1,10 @@
-interface IconPlusProps {
-  width?: number
-  height?: number
-  className?: string
-}
+import { IconBaseProps } from '../types/Icon.types'
 
 export const IconPlus = ({
   width = 18,
   height = 18,
-  className = 'text-primary',
-}: IconPlusProps) => {
+  className = '',
+}: IconBaseProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
