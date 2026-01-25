@@ -9,5 +9,4 @@ export interface ReactGatewayProps extends PropsWithChildren {
   scenarioComponent?: React.ComponentType
   position?: 'left' | 'right'
   fallbackComponent?: ComponentType<FallbackProps>
-  costAnalyzerComponent?: ComponentType<{ componentName: string }>
 }

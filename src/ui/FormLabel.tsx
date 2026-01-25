@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react'
 import { IconInfo } from '@/assets/IconInfo'
+import { type ReactNode } from 'react'
 
 interface FormLabelProps {
   htmlFor?: string
@@ -30,7 +30,7 @@ export const FormLabel = ({
         style={{ fontSize: '0.875rem', color: '#495057' }}
       >
         {icon && <span className="text-primary">{icon}</span>}
-        <span>{children}</span>
+        <div className="w-100 d-flex justify-content-between align-items-center">{children}</div>
         {required && (
           <span className="text-danger" title="Required field">
             *

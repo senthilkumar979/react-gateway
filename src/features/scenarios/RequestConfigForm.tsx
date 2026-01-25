@@ -1,5 +1,9 @@
 import type { RequestConfig } from '@/types/Scenarios.types'
 import { FormLabel } from '@/ui/FormLabel'
+import { Button } from 'react-bootstrap'
+import FormCheckInput from 'react-bootstrap/esm/FormCheckInput'
+import FormCheckLabel from 'react-bootstrap/esm/FormCheckLabel'
+import { IconTrash } from '../../assets/IconTrash'
 
 interface RequestConfigFormProps {
   request: RequestConfig
@@ -20,28 +24,27 @@ export const RequestConfigForm = ({
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-start mb-2">
           <div className="form-check form-switch">
-            <input
-              className="form-check-input"
-              type="checkbox"
+            <FormCheckInput
+              id={`${prefix}-isActive`}
               checked={request.isActive}
               onChange={(e) => onUpdate({ isActive: e.target.checked })}
             />
-            <label className="form-check-label">Active</label>
+            <FormCheckLabel htmlFor={`${prefix}-isActive`}>
+              Active
+            </FormCheckLabel>
           </div>
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-danger"
-            onClick={onRemove}
-          >
-            Remove
-          </button>
         </div>
-        <div className="mb-2">
+        <div className="mb-4">
           <FormLabel
             htmlFor={`${prefix}-name`}
             description="A descriptive name for this request"
           >
-            Request Name
+            <div className="w-100 d-flex justify-content-between align-items-center">
+              Request Name
+              <Button variant="outline-danger" size="sm" onClick={onRemove}>
+                <IconTrash width={16} height={16} />
+              </Button>
+            </div>
           </FormLabel>
           <input
             id={`${prefix}-name`}
@@ -52,7 +55,7 @@ export const RequestConfigForm = ({
             placeholder="e.g., Get User Profile"
           />
         </div>
-        <div className="mb-2">
+        <div className="mb-4">
           <FormLabel
             htmlFor={`${prefix}-url`}
             description="URL pattern to match. Supports regex patterns."
@@ -69,7 +72,7 @@ export const RequestConfigForm = ({
             placeholder="e.g., /api/users/.*"
           />
         </div>
-        <div className="row mb-2">
+        <div className="row mb-4">
           <div className="col-md-6">
             <FormLabel
               htmlFor={`${prefix}-status`}

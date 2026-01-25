@@ -5,6 +5,8 @@ import type { Scenario } from '@/types/Scenarios.types'
 import { useState } from 'react'
 import { ScenarioDropdown } from './ScenarioDropdown'
 import { ScenarioForm } from './ScenarioForm'
+import { Button } from 'react-bootstrap'
+import { IconPlus } from '../../assets/IconPlus'
 
 export const ScenariosSection = () => {
   const {
@@ -44,23 +46,25 @@ export const ScenariosSection = () => {
       description="Create and manage API response scenarios to simulate different backend behaviors"
       defaultOpen={true}
     >
-      <div className="mb-3">
+      {scenarios?.length > 0 && <div className="mb-3">
         <ScenarioDropdown
           scenarios={scenarios}
           selectedId={state.activeScenarioId}
           onSelect={handleSelect}
         />
-      </div>
-      <div className="mb-3">
-        <button
-          className="btn btn-primary btn-sm"
+      </div>}
+      <div className="mb-3 d-flex justify-content-end">
+        <Button
+          variant="outline-primary"
+          size="sm"
           onClick={() => {
             setEditingScenario(null)
             setShowForm(true)
           }}
         >
+          <IconPlus width={16} height={16} />
           Create Scenario
-        </button>
+        </Button>
       </div>
       {scenarios.length > 0 && (
         <div className="mb-3">

@@ -1,4 +1,3 @@
-import { ActiveStatusCard } from '@/components/ActiveStatusCard'
 import { GatewayDrawer } from '@/components/GatewayDrawer'
 import { GatewayTrigger } from '@/components/GatewayTrigger'
 import { GatewayProvider, useGateway } from '@/context/GatewayContext'
@@ -9,7 +8,6 @@ import { SnapshotsProvider, useSnapshots } from '@/context/SnapshotsContext'
 import { UIFlowsProvider } from '@/context/UIFlowsContext'
 import { ChaosTestingSection } from '@/features/chaosTesting/ChaosTestingSection'
 import { PersonasSection } from '@/features/personas/PersonasSection'
-import { RenderAnalyzerSection } from '@/features/renderAnalyzer/RenderAnalyzerSection'
 import { ScenariosSection } from '@/features/scenarios/ScenariosSection'
 import { SettingsSection } from '@/features/settings/SettingsSection'
 import { SnapshotsSection } from '@/features/snapshots/SnapshotsSection'
@@ -31,7 +29,6 @@ const GatewayContent = ({
   clientApp,
   onSnapshotChange,
   scenarioComponent,
-  costAnalyzerComponent,
 }: ReactGatewayProps) => {
   const { state, setDrawerPosition, setTriggerPosition } = useGateway()
   const { getScenario } = useScenarios()
@@ -100,13 +97,12 @@ const GatewayContent = ({
       <GatewayErrorBoundary>
         <GatewayTrigger />
         <GatewayDrawer>
-          <ActiveStatusCard />
           <Accordion defaultActiveKey="scenarios" id="gateway-accordion">
             <ScenariosSection />
             <SnapshotsSection />
             <SettingsSection />
             <ChaosTestingSection />
-            <RenderAnalyzerSection costAnalyzerComponent={costAnalyzerComponent} />
+            {/* <RenderAnalyzerSection /> */}
             <UIFlowsSection />
             <PersonasSection scenarioComponent={scenarioComponent} />
           </Accordion>

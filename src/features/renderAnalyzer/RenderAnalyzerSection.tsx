@@ -1,19 +1,10 @@
 import { AccordionSection } from '@/components/AccordionSection'
 import { useRenderAnalyzer } from '@/context/RenderAnalyzerContext'
-import { ComponentType } from 'react'
 import { AnalyzerControls } from './AnalyzerControls'
 import { ReportView } from './ReportView'
 
-export const RenderAnalyzerSection = ({
-  costAnalyzerComponent,
-}: {
-  costAnalyzerComponent?: ComponentType<{ componentName: string }>
-}) => {
+export const RenderAnalyzerSection = () => {
   const { reports } = useRenderAnalyzer()
-
-  if (!costAnalyzerComponent) {
-    return null
-  }
 
   return (
     <AccordionSection

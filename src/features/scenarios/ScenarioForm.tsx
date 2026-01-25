@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import type { Scenario, RequestConfig } from '@/types/Scenarios.types'
-import { RequestConfigForm } from './RequestConfigForm'
+import type { RequestConfig, Scenario } from '@/types/Scenarios.types'
 import { FormLabel } from '@/ui/FormLabel'
+import { useEffect, useState } from 'react'
+import { RequestConfigForm } from './RequestConfigForm'
 
 interface ScenarioFormProps {
   scenario: Scenario | null
