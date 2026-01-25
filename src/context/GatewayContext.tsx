@@ -62,6 +62,8 @@ export const GatewayProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const setActiveScenarioId = useCallback((activeScenarioId: string | null) => {
+    console.log('setActiveScenarioId', activeScenarioId);
+    console.log('state', state);
     setState((prev) => ({ ...prev, activeScenarioId }))
   }, [])
 

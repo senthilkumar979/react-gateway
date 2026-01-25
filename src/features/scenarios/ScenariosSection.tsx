@@ -1,21 +1,15 @@
 import { AccordionSection } from '@/components/AccordionSection'
-import { useGateway } from '@/context/GatewayContext'
 import { useScenarios } from '@/context/ScenariosContext'
 import type { Scenario } from '@/types/Scenarios.types'
 import { useState } from 'react'
-import { ScenarioDropdown } from './ScenarioDropdown'
-import { ScenarioForm } from './ScenarioForm'
 import { Button } from 'react-bootstrap'
 import { IconPlus } from '../../assets/IconPlus'
+import { ImportButton } from './ImportButton'
+import { ScenarioAccordion } from './ScenarioAccordion'
+import { ScenarioForm } from './ScenarioForm'
 
 export const ScenariosSection = () => {
-  const {
-    scenarios,
-    addScenario,
-    updateScenario,
-    deleteScenario,
-  } = useScenarios()
-  const { state, setActiveScenarioId } = useGateway()
+  const { addScenario, updateScenario } = useScenarios()
   const [editingScenario, setEditingScenario] = useState<Scenario | null>(null)
   const [showForm, setShowForm] = useState(false)
 
@@ -31,10 +25,6 @@ export const ScenariosSection = () => {
     setShowForm(false)
   }
 
-  const handleSelect = (scenarioId: string | null) => {
-    setActiveScenarioId(scenarioId)
-  }
-
   const handleEdit = (scenario: Scenario) => {
     setEditingScenario(scenario)
     setShowForm(true)
@@ -46,14 +36,7 @@ export const ScenariosSection = () => {
       description="Create and manage API response scenarios to simulate different backend behaviors"
       defaultOpen={true}
     >
-      {scenarios?.length > 0 && <div className="mb-3">
-        <ScenarioDropdown
-          scenarios={scenarios}
-          selectedId={state.activeScenarioId}
-          onSelect={handleSelect}
-        />
-      </div>}
-      <div className="mb-3 d-flex justify-content-end">
+      <div className="mb-3 d-flex justify-content-end gap-2">
         <Button
           variant="outline-primary"
           size="sm"
@@ -65,44 +48,10 @@ export const ScenariosSection = () => {
           <IconPlus width={16} height={16} />
           Create Scenario
         </Button>
+        <ImportButton />
       </div>
-      {scenarios.length > 0 && (
-        <div className="mb-3">
-          <h6>Existing Scenarios</h6>
-          <div className="list-group">
-            {scenarios.map((scenario) => (
-              <div key={scenario.id} className="list-group-item">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <strong>{scenario.name}</strong>
-                    {scenario.description && (
-                      <div className="small text-muted">
-                        {scenario.description}
-                      </div>
-                    )}
-                  </div>
-                  <div className="d-flex gap-2">
-                    <button
-                      className="btn btn-sm btn-outline-primary"
-                      onClick={() => handleEdit(scenario)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => deleteScenario(scenario.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
       {showForm && (
-        <div className="mb-3">
+        <div className="mb-4">
           <ScenarioForm
             scenario={editingScenario}
             onSave={handleSave}
@@ -113,6 +62,7 @@ export const ScenariosSection = () => {
           />
         </div>
       )}
+      <ScenarioAccordion onEdit={handleEdit} />
     </AccordionSection>
   )
 }

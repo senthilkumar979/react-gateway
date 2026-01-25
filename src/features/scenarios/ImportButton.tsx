@@ -1,29 +1,21 @@
 import type { Scenario } from '@/types/Scenarios.types'
 import { useRef } from 'react'
 import { Button } from 'react-bootstrap'
-import { IconExport } from '../../assets/IconExport'
 import { IconImport } from '../../assets/IconImport'
+import { useScenarios } from '../../context/ScenariosContext'
 
-interface ImportExportButtonsProps {
-  scenarios: Scenario[]
-  onImport: (scenarios: Scenario[]) => void
-}
-
-export const ImportExportButtons = ({
-  scenarios,
-  onImport,
-}: ImportExportButtonsProps) => {
+export const ImportButton = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { addScenario } = useScenarios()
 
-  const handleExport = () => {
-    const dataStr = JSON.stringify(scenarios, null, 2)
-    const dataBlob = new Blob([dataStr], { type: 'application/json' })
-    const url = URL.createObjectURL(dataBlob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `scenarios-${Date.now()}.json`
-    link.click()
-    URL.revokeObjectURL(url)
+  const onImport = (imported: Scenario[]) => {
+    imported.forEach((scenario) => {
+      addScenario({
+        name: scenario.name,
+        description: scenario.description,
+        requests: scenario.requests,
+      })
+    })
   }
 
   const handleImport = () => {
@@ -50,14 +42,15 @@ export const ImportExportButtons = ({
   }
 
   return (
-    <div className="d-flex gap-2">
+    <div className="d-flex gap-2 align-items-center">
       <Button
         type="button"
-        variant="outline-primary"
+        size="sm"
+        variant="outline-dark"
         onClick={handleImport}
         title="Import Scenarios"
       >
-        <IconImport />
+        <IconImport /> Import
       </Button>
       <input
         ref={fileInputRef}
@@ -66,14 +59,6 @@ export const ImportExportButtons = ({
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
-      <Button
-        type="button"
-        variant="outline-secondary"
-        onClick={handleExport}
-        title="Export Scenarios"
-      >
-        <IconExport />
-      </Button>
     </div>
   )
 }

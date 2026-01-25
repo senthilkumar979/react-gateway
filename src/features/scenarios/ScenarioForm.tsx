@@ -1,6 +1,7 @@
 import type { RequestConfig, Scenario } from '@/types/Scenarios.types'
 import { FormLabel } from '@/ui/FormLabel'
 import { useEffect, useState } from 'react'
+import { Button, Card } from 'react-bootstrap'
 import { RequestConfigForm } from './RequestConfigForm'
 
 interface ScenarioFormProps {
@@ -66,77 +67,73 @@ export const ScenarioForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <FormLabel htmlFor="scenario-name" required>
-          Scenario Name
-        </FormLabel>
-        <input
-          id="scenario-name"
-          type="text"
-          className="form-control"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <FormLabel
-          htmlFor="scenario-description"
-          description="Optional description for this scenario"
-        >
-          Description
-        </FormLabel>
-        <textarea
-          id="scenario-description"
-          className="form-control"
-          rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <FormLabel description="Configure API requests to intercept and manipulate">
-            API Requests
+    <Card className="bg-light">
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <FormLabel htmlFor="scenario-name" required>
+            Scenario Name
           </FormLabel>
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-primary"
-            onClick={addRequest}
-          >
-            Add Request
-          </button>
-        </div>
-        {requests.map((request, index) => (
-          <RequestConfigForm
-            key={index}
-            index={index}
-            request={request}
-            onUpdate={(updates) => updateRequest(index, updates)}
-            onRemove={() => removeRequest(index)}
+          <input
+            id="scenario-name"
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
-        ))}
-        {requests.length === 0 && (
-          <p className="text-muted small">
-            No requests configured. Click "Add Request" to start.
-          </p>
-        )}
-      </div>
-      <div className="d-flex gap-2">
-        <button type="submit" className="btn btn-primary">
-          {scenario ? 'Update' : 'Create'} Scenario
-        </button>
-        {scenario && (
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={onCancel}
+        </div>
+        <div className="mb-3">
+          <FormLabel
+            htmlFor="scenario-description"
+            description="Optional description for this scenario"
           >
+            Description
+          </FormLabel>
+          <textarea
+            id="scenario-description"
+            className="form-control"
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <FormLabel description="Configure API requests to intercept and manipulate">
+              API Requests
+            </FormLabel>
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-primary"
+              onClick={addRequest}
+            >
+              Add Request
+            </button>
+          </div>
+          {requests.map((request, index) => (
+            <RequestConfigForm
+              key={index}
+              index={index}
+              request={request}
+              onUpdate={(updates) => updateRequest(index, updates)}
+              onRemove={() => removeRequest(index)}
+            />
+          ))}
+          {requests.length === 0 && (
+            <p className="text-muted small">
+              No requests configured. Click "Add Request" to start.
+            </p>
+          )}
+        </div>
+        <div className="d-flex gap-2 justify-content-center">
+          <Button variant="outline-primary" size="sm" type="submit">
+            {scenario ? 'Update' : 'Create'} Scenario
+          </Button>
+          <Button variant="outline-secondary" size="sm" onClick={onCancel}>
             Cancel
-          </button>
-        )}
-      </div>
-    </form>
+          </Button>
+        </div>
+      </form>
+    </Card>
   )
 }

@@ -1,4 +1,3 @@
-import { IconInfo } from '@/assets/IconInfo'
 import { type ReactNode } from 'react'
 
 interface FormLabelProps {
@@ -19,7 +18,6 @@ export const FormLabel = ({
   icon,
   isHideSpaceBelow = false,
   description,
-  tooltip,
   className = '',
 }: FormLabelProps) => {
   return (
@@ -30,21 +28,7 @@ export const FormLabel = ({
         style={{ fontSize: '0.875rem', color: '#495057' }}
       >
         {icon && <span className="text-primary">{icon}</span>}
-        <div className="w-100 d-flex justify-content-between align-items-center">{children}</div>
-        {required && (
-          <span className="text-danger" title="Required field">
-            *
-          </span>
-        )}
-        {tooltip && (
-          <span
-            className="badge bg-light text-dark border ms-auto"
-            title={tooltip}
-            style={{ cursor: 'help', fontSize: '0.65rem' }}
-          >
-            <IconInfo />
-          </span>
-        )}
+        <div className={"d-flex justify-content-between align-items-center " + (required ? 'star' : '')}>{children}</div>
       </label>
       {description && (
         <small className="text-muted d-block" style={{ fontSize: '0.75rem', marginTop: '-0.25rem', textAlign: "left" }}>

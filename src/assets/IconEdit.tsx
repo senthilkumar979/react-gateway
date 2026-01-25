@@ -1,8 +1,8 @@
 import { IconBaseProps } from '../types/Icon.types'
 
-export const IconImport = ({
-  width = 18,
-  height = 18,
+export const IconEdit = ({
+  width = 24,
+  height = 24,
   className = '',
 }: IconBaseProps) => {
   return (
@@ -15,13 +15,8 @@ export const IconImport = ({
       fill="currentColor"
       viewBox="0 0 24 24"
     >
-      <path
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01"
-      />
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 5-9 14-13z" />
     </svg>
   )
 }
