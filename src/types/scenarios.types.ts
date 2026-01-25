@@ -2,9 +2,9 @@ export interface RequestConfig {
   name: string
   isActive: boolean
   url: string
-  statusCode: string
-  customResponse: string
-  delayInMs: number
+  statusCode?: string
+  customResponse?: string
+  delayInMs?: number
 }
 
 export interface Scenario {

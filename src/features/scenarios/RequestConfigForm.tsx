@@ -43,7 +43,8 @@ export const RequestConfigForm = ({
           className="form-control form-control-sm"
           value={request.name}
           readOnly={isReadonly}
-          onChange={(e) => onUpdate({ name: e.target.value })}
+          disabled={isReadonly}
+          onChange={(e) => onUpdate?.({ name: e.target.value })}
           placeholder="e.g., Get User Profile"
         />
       </div>

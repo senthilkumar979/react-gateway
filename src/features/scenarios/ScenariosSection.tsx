@@ -1,8 +1,8 @@
 import { AccordionSection } from '@/components/AccordionSection'
 import { useScenarios } from '@/context/ScenariosContext'
-import type { Scenario } from '@/types/Scenarios.types'
+import type { RequestConfig, Scenario } from '@/types/Scenarios.types'
 import { useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Alert } from 'react-bootstrap'
 import { IconPlus } from '../../assets/IconPlus'
 import { ImportButton } from './ImportButton'
 import { ScenarioAccordion } from './ScenarioAccordion'
@@ -12,10 +12,49 @@ export const ScenariosSection = () => {
   const { addScenario, updateScenario } = useScenarios()
   const [editingScenario, setEditingScenario] = useState<Scenario | null>(null)
   const [showForm, setShowForm] = useState(false)
+  const [alertMessage, setAlertMessage] = useState<string | null>(null)
+
+  const scrollToTop = () => {
+    document
+      .getElementById('gateway-accordion')
+      ?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   const handleSave = (
     scenarioData: Omit<Scenario, 'id' | 'createdAt' | 'updatedAt'>,
   ) => {
+    if (!scenarioData.name?.trim()) {
+      setAlertMessage('Scenario name is required.')
+      return
+    }
+
+    if (
+      !Array.isArray(scenarioData.requests) ||
+      scenarioData.requests.length === 0
+    ) {
+      setAlertMessage('Scenario must contain at least one request.')
+      return
+    }
+
+    const mandatoryFields = ['name', 'url']
+    for (let i = 0; i < scenarioData.requests.length; i++) {
+      const request = scenarioData.requests[i]
+      for (const field of mandatoryFields) {
+        const value = request[field as keyof RequestConfig]
+        if (typeof value !== 'string' || !value.trim()) {
+          scrollToTop()
+          setAlertMessage(
+            `Request #${i + 1} is missing required field: ${
+              field[0].toUpperCase() + field.slice(1)
+            }.`,
+          )
+          return
+        }
+      }
+    }
+
+    setAlertMessage(null)
+
     if (editingScenario) {
       updateScenario(editingScenario.id, scenarioData)
       setEditingScenario(null)
@@ -26,6 +65,7 @@ export const ScenariosSection = () => {
   }
 
   const handleEdit = (scenario: Scenario) => {
+    scrollToTop()
     setEditingScenario(scenario)
     setShowForm(true)
   }
@@ -36,6 +76,16 @@ export const ScenariosSection = () => {
       description="Create and manage API response scenarios to simulate different backend behaviors"
       defaultOpen={true}
     >
+      {alertMessage && (
+        <Alert
+          variant="danger"
+          className="mb-3"
+          onClose={() => setAlertMessage(null)}
+          dismissible
+        >
+          {alertMessage}
+        </Alert>
+      )}
       <div className="mb-3 d-flex justify-content-end gap-2">
         <Button
           variant="outline-primary"
@@ -58,6 +108,7 @@ export const ScenariosSection = () => {
             onCancel={() => {
               setShowForm(false)
               setEditingScenario(null)
+              setAlertMessage(null)
             }}
           />
         </div>
