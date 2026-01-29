@@ -1,13 +1,27 @@
-import type { Scenario, RequestConfig } from '@/types/Scenarios.types'
+import type { RequestConfig, Scenario } from '@/types/Scenarios.types'
 
-let originalFetch: typeof fetch
-let originalAxios: any
+interface AxiosRequestConfig {
+  url?: string
+  [key: string]: unknown
+}
+
+interface AxiosLike {
+  request?(config: AxiosRequestConfig): Promise<unknown>
+}
+
+interface WindowWithAxios extends Window {
+  axios?: AxiosLike
+}
+
+type AxiosRequestFn = (this: unknown, config: AxiosRequestConfig) => Promise<unknown>
+
+let originalFetch: typeof fetch | undefined
+let originalAxiosRequest: AxiosRequestFn | null = null
 let activeScenario: Scenario | null = null
 let isIntercepting = false
 
-const delay = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
+const delay = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms))
 
 const matchRequest = (url: string, pattern: string): boolean => {
   try {
@@ -20,25 +34,39 @@ const matchRequest = (url: string, pattern: string): boolean => {
 
 const findMatchingRequest = (url: string): RequestConfig | null => {
   if (!activeScenario) return null
-
   for (const request of activeScenario.requests) {
     if (request.isActive && matchRequest(url, request.url)) {
       return request
     }
   }
-
   return null
 }
 
-const createMockResponse = (requestConfig: RequestConfig): Response => {
-  const status = parseInt(requestConfig.statusCode, 10) || 200
-  let body: string
-
+/**
+ * Safely ensures a valid JSON string for `Response`. If the input is not valid JSON,
+ * it will wrap it as a JSON-stringified string.
+ * This prevents fetch().json() from throwing on invalid JSON.
+ */
+const ensureValidJsonString = (raw: string): string => {
+  if (!raw || typeof raw !== 'string') return ''
   try {
-    JSON.parse(requestConfig.customResponse)
-    body = requestConfig.customResponse
+    // Try to parse, will throw if not valid JSON
+    JSON.parse(raw)
+    return raw
   } catch {
-    body = requestConfig.customResponse
+    // Not valid JSON, return as a quoted JSON string value
+    return JSON.stringify(raw)
+  }
+}
+
+const createMockResponse = (requestConfig: RequestConfig): Response => {
+  const status = parseInt(requestConfig.statusCode ?? '', 10) || 200
+  // Ensure body is always valid JSON
+  let body: string = ''
+  if (typeof requestConfig.customResponseValue === 'string' && requestConfig.customResponseValue !== '') {
+    body = ensureValidJsonString(requestConfig.customResponseValue)
+  } else {
+    body = ''
   }
 
   return new Response(body, {
@@ -56,41 +84,66 @@ export const startInterception = (scenario: Scenario | null): void => {
 
   isIntercepting = true
 
-  if (typeof window !== 'undefined' && window.fetch) {
-    originalFetch = window.fetch
+  if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
+    if (!originalFetch) {
+      originalFetch = window.fetch
+    }
     window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
-      const matchingRequest = findMatchingRequest(url)
+      let url: string
+      if (typeof input === 'string') {
+        url = input
+      } else if (input instanceof URL) {
+        url = input.href
+      } else {
+        url = (input as Request).url
+      }
 
-      if (matchingRequest) {
-        if (matchingRequest.delayInMs > 0) {
+      const matchingRequest = findMatchingRequest(url)
+      if (
+        matchingRequest &&
+        (matchingRequest.statusCode !== '200' || matchingRequest.customResponseValue !== '')
+      ) {
+        if (
+          typeof matchingRequest.delayInMs === 'number' &&
+          matchingRequest.delayInMs > 0
+        ) {
           await delay(matchingRequest.delayInMs)
         }
         return createMockResponse(matchingRequest)
       }
-
-      return originalFetch(input, init)
+      return originalFetch!(input, init)
     }
   }
 
-  if (typeof window !== 'undefined' && (window as any).axios) {
-    const axios = (window as any).axios
-    originalAxios = axios
+  // Axios mock
+  const win = typeof window !== 'undefined' ? (window as WindowWithAxios) : null
+  if (win?.axios) {
+    const axios = win.axios
+    const originalRequest = (axios.request ?? axios) as AxiosRequestFn
+    originalAxiosRequest = originalRequest
 
-    const originalRequest = axios.request || axios
-    axios.request = function (config: any) {
-      const matchingRequest = findMatchingRequest(config.url || '')
+    axios.request = function (config: AxiosRequestConfig) {
+      const matchingRequest = findMatchingRequest(config.url ?? '')
 
       if (matchingRequest) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            const status = parseInt(matchingRequest.statusCode, 10) || 200
-            let data: any
+            const status =
+              parseInt(matchingRequest.statusCode ?? '', 10) || 200
+            let data: unknown
 
-            try {
-              data = JSON.parse(matchingRequest.customResponse)
-            } catch {
-              data = matchingRequest.customResponse
+            if (
+              typeof matchingRequest.customResponseValue === 'string' &&
+              matchingRequest.customResponseValue !== ''
+            ) {
+              try {
+                data = JSON.parse(matchingRequest.customResponseValue)
+              } catch {
+                // Fallback to the string, same as fetch
+                data = matchingRequest.customResponseValue
+              }
+            } else {
+              data = matchingRequest.customResponseValue
             }
 
             resolve({
@@ -100,7 +153,7 @@ export const startInterception = (scenario: Scenario | null): void => {
               headers: {},
               config,
             })
-          }, matchingRequest.delayInMs)
+          }, matchingRequest.delayInMs ?? 0)
         })
       }
 
@@ -119,10 +172,9 @@ export const stopInterception = (): void => {
     window.fetch = originalFetch
   }
 
-  if (typeof window !== 'undefined' && originalAxios) {
-    const axios = (window as any).axios
-    if (axios.request) {
-      axios.request = originalAxios.request || originalAxios
-    }
+  const win = typeof window !== 'undefined' ? (window as WindowWithAxios) : null
+  if (win?.axios && originalAxiosRequest) {
+    win.axios.request = originalAxiosRequest
+    originalAxiosRequest = null
   }
 }

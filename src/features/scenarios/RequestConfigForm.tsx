@@ -1,5 +1,6 @@
 import type { RequestConfig } from '@/types/Scenarios.types'
 import { FormLabel } from '@/ui/FormLabel'
+import { FormSelect } from 'react-bootstrap'
 import { RequestAccordionItem } from './RequestAccordionItem'
 
 interface RequestConfigFormProps {
@@ -8,6 +9,7 @@ interface RequestConfigFormProps {
   onUpdate?: (updates: Partial<RequestConfig>) => void
   onRemove?: () => void
   index?: number
+  responseList: Record<string, unknown>[]
 }
 
 export const RequestConfigForm = ({
@@ -16,9 +18,31 @@ export const RequestConfigForm = ({
   onUpdate,
   onRemove,
   index = 0,
+  responseList,
 }: RequestConfigFormProps) => {
   const prefix = `request-${index}`
   const title = request.name.trim() || 'New Request'
+
+  const handleUpdateCustomResponse = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    let customResponseValue = ''
+    if (e.target.value === 'custom') {
+      customResponseValue = ''
+    } else {
+      const selectedResponse = responseList.find(
+        (r) => Object.keys(r)[0] === e.target.value,
+      )
+      console.log(selectedResponse)
+      customResponseValue = JSON.stringify(
+        selectedResponse?.[Object.keys(selectedResponse)[0]],
+      )
+    }
+    onUpdate?.({
+      customResponse: e.target.value as 'custom' | string,
+      customResponseValue,
+    })
+  }
 
   return (
     <RequestAccordionItem
@@ -63,7 +87,7 @@ export const RequestConfigForm = ({
           value={request.url}
           readOnly={isReadonly}
           disabled={isReadonly}
-          onChange={(e) => onUpdate({ url: e.target.value })}
+          onChange={(e) => onUpdate?.({ url: e.target.value })}
           placeholder="e.g., /api/users/.*"
         />
       </div>
@@ -115,16 +139,37 @@ export const RequestConfigForm = ({
         >
           Custom Response (JSON)
         </FormLabel>
-        <textarea
-          id={`${prefix}-response`}
-          className="form-control form-control-sm"
-          rows={4}
-          value={request.customResponse}
-          readOnly={isReadonly}
-          disabled={isReadonly}
-          onChange={(e) => onUpdate?.({ customResponse: e.target.value })}
-          placeholder='{"message": "Custom response"}'
-        />
+        {responseList?.length > 0 && (
+          <FormSelect
+            onChange={handleUpdateCustomResponse}
+            value={request.customResponse}
+            disabled={isReadonly}
+          >
+            {responseList?.map((response) => (
+              <option
+                key={Object.keys(response)[0]}
+                value={Object.keys(response)[0]}
+              >
+                {Object.keys(response)[0]}
+              </option>
+            ))}
+            <option value="custom">Custom</option>
+          </FormSelect>
+        )}
+        {request.customResponse === 'custom' && (
+          <textarea
+            id={`${prefix}-custom-response`}
+            className="form-control form-control-sm mt-3"
+            rows={4}
+            value={request.customResponseValue}
+            readOnly={isReadonly}
+            disabled={isReadonly}
+            onChange={(e) =>
+              onUpdate?.({ customResponseValue: e.target.value })
+            }
+            placeholder='{"message": "Custom response"}'
+          />
+        )}
       </div>
     </RequestAccordionItem>
   )

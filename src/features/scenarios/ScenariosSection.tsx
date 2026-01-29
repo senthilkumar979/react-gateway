@@ -4,15 +4,22 @@ import type { RequestConfig, Scenario } from '@/types/Scenarios.types'
 import { useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { IconPlus } from '../../assets/IconPlus'
+import { IconReset } from '../../assets/IconReset'
+import { useGateway } from '../../context/GatewayContext'
 import { ImportButton } from './ImportButton'
 import { ScenarioAccordion } from './ScenarioAccordion'
 import { ScenarioForm } from './ScenarioForm'
 
-export const ScenariosSection = () => {
+export const ScenariosSection = ({
+  responseList,
+}: {
+  responseList: Record<string, unknown>[]
+}) => {
   const { addScenario, updateScenario } = useScenarios()
   const [editingScenario, setEditingScenario] = useState<Scenario | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [alertMessage, setAlertMessage] = useState<string | null>(null)
+  const { setActiveScenarioId } = useGateway()
 
   const scrollToTop = () => {
     document
@@ -70,6 +77,10 @@ export const ScenariosSection = () => {
     setShowForm(true)
   }
 
+  const resetActiveScenario = () => {
+    setActiveScenarioId(null)
+  }
+
   return (
     <AccordionSection
       title="Scenarios"
@@ -98,6 +109,10 @@ export const ScenariosSection = () => {
           <IconPlus width={16} height={16} />
           Create Scenario
         </Button>
+        <Button variant="outline-info" size="sm" onClick={resetActiveScenario}>
+          <IconReset />
+          Reset Active Scenario
+        </Button>
         <ImportButton />
       </div>
       {showForm && (
@@ -110,6 +125,7 @@ export const ScenariosSection = () => {
               setEditingScenario(null)
               setAlertMessage(null)
             }}
+            responseList={responseList}
           />
         </div>
       )}

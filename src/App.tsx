@@ -1,28 +1,24 @@
 import { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
 import './App.css'
-import reactLogo from './assets/react.svg'
-import { CostlyComponent } from './CostlyComponent'
 import { GatewayErrorBoundary } from './features/errorBoundary/GatewayErrorBoundary'
-import viteLogo from '/vite.svg'
 
 function App() {
   const [count, setCount] = useState(0)
 
+  const fetchCountries = async () => {
+    const response = await fetch('https://restcountries.com/v3.1/name/eesti')
+    const data = await response.json()
+    console.log(data)
+  }
+
   useEffect(() => {
-    console.log(new Date().toISOString())
-  }, [count])
+    fetchCountries()
+  }, [])
 
   return (
     <GatewayErrorBoundary>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>React Gateway</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -34,8 +30,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-
-      {count > 2 && <CostlyComponent />}
+      <Button onClick={fetchCountries}>Fetch Countries</Button>
     </GatewayErrorBoundary>
   )
 }

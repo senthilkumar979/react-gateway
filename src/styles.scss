@@ -170,7 +170,8 @@ input::placeholder {
   font-size: 0.875rem;
 }
 
-.form-control {
+.form-control,
+.form-select {
   font-size: 0.875rem;
 }
 
@@ -265,7 +266,6 @@ input::placeholder {
     border-bottom: none !important;
   }
 }
-
 
 .alert {
   font-size: 0.875rem;

@@ -1,12 +1,8 @@
-import { ComponentType, PropsWithChildren, ReactNode } from 'react'
-import type { FallbackProps } from 'react-error-boundary'
+import { PropsWithChildren, ReactNode } from 'react'
 import type { Snapshot } from './Snapshots.types'
 
 export interface ReactGatewayProps extends PropsWithChildren {
   clientApp: ReactNode
-  components?: string[]
   onSnapshotChange?: (snapshot: Snapshot) => void
-  scenarioComponent?: React.ComponentType
-  position?: 'left' | 'right'
-  fallbackComponent?: ComponentType<FallbackProps>
+  responseList?: Record<string, unknown>[]
 }

@@ -46,8 +46,7 @@ export const SnapshotsSection = () => {
 
   const handleSnapshotNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    // Only allow values that start with a letter and are followed by alphanumeric characters
-    const regex = /^[a-zA-Z][a-zA-Z0-9]{0,24}$/
+    const regex = /^[a-zA-Z][a-zA-Z0-9 _()\-\s]{0,50}$/
     if (value === '' || regex.test(value)) {
       setSnapshotName(value)
     }
@@ -57,8 +56,7 @@ export const SnapshotsSection = () => {
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === 'Enter') {
-      // Only allow create if name matches rules (redundant but safe for keyboard submits)
-      const regex = /^[a-zA-Z][a-zA-Z0-9]{2,24}$/
+      const regex = /^[a-zA-Z][a-zA-Z0-9 _()\-\s]{2,50}$/
       if (regex.test(snapshotName)) {
         handleCreate()
       }
@@ -98,8 +96,8 @@ export const SnapshotsSection = () => {
                 onChange={handleSnapshotNameChange}
                 placeholder="Snapshot name"
                 minLength={3}
-                maxLength={25}
-                pattern="[a-zA-Z][a-zA-Z0-9]{2,24}"
+                maxLength={50}
+                pattern="[a-zA-Z][a-zA-Z0-9 _()\-\s]{2,50}"
                 onKeyPress={handleSnapshotNameKeyPress}
                 autoFocus
               />

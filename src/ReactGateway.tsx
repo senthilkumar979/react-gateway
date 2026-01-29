@@ -7,7 +7,6 @@ import { SettingsProvider, useSettings } from '@/context/SettingsContext'
 import { SnapshotsProvider, useSnapshots } from '@/context/SnapshotsContext'
 import { UIFlowsProvider } from '@/context/UIFlowsContext'
 import { ChaosTestingSection } from '@/features/chaosTesting/ChaosTestingSection'
-import { PersonasSection } from '@/features/personas/PersonasSection'
 import { ScenariosSection } from '@/features/scenarios/ScenariosSection'
 import { SettingsSection } from '@/features/settings/SettingsSection'
 import { SnapshotsSection } from '@/features/snapshots/SnapshotsSection'
@@ -28,7 +27,7 @@ import { GatewayErrorBoundary } from './features/errorBoundary/GatewayErrorBound
 const GatewayContent = ({
   clientApp,
   onSnapshotChange,
-  scenarioComponent,
+  responseList,
 }: ReactGatewayProps) => {
   const { state, setDrawerPosition, setTriggerPosition } = useGateway()
   const { getScenario } = useScenarios()
@@ -98,30 +97,39 @@ const GatewayContent = ({
         <GatewayTrigger />
         <GatewayDrawer>
           <Accordion defaultActiveKey="scenarios" id="gateway-accordion">
-            <ScenariosSection />
+            <ScenariosSection responseList={responseList ?? []} />
             <SnapshotsSection />
             <SettingsSection />
             <ChaosTestingSection />
             {/* <RenderAnalyzerSection /> */}
             <UIFlowsSection />
-            <PersonasSection scenarioComponent={scenarioComponent} />
+            {/* <PersonasSection scenarioComponent={scenarioComponent} /> */}
           </Accordion>
           {settings.chaos &&
             (() => {
               throw new Error('personaName is not defined')
             })()}
+          {process.env.NODE_ENV === 'development' && (
+            <img
+              src="/dev.gif"
+              alt="Dev GIF"
+              className="dev-gif"
+              width={300}
+              height={150}
+            />
+          )}
         </GatewayDrawer>
       </GatewayErrorBoundary>
     </>
   )
 }
 
-export const ReactGateway = ({ position, ...props }: ReactGatewayProps) => {
+export const ReactGateway = (props: ReactGatewayProps) => {
   return (
     <GatewayProvider>
       <ScenariosProvider>
         <SnapshotsProvider>
-          <SettingsProvider initialPosition={position}>
+          <SettingsProvider initialPosition={'right'}>
             <RenderAnalyzerProvider>
               <UIFlowsProvider>
                 <GatewayContent {...props} />

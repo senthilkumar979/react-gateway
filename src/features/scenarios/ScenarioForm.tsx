@@ -8,12 +8,14 @@ interface ScenarioFormProps {
   scenario: Scenario | null
   onSave: (scenario: Omit<Scenario, 'id' | 'createdAt' | 'updatedAt'>) => void
   onCancel: () => void
+  responseList: Record<string, unknown>[]
 }
 
 export const ScenarioForm = ({
   scenario,
   onSave,
   onCancel,
+  responseList,
 }: ScenarioFormProps) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -117,6 +119,7 @@ export const ScenarioForm = ({
               request={request}
               onUpdate={(updates) => updateRequest(index, updates)}
               onRemove={() => removeRequest(index)}
+              responseList={responseList}
             />
           ))}
           {requests.length === 0 && (

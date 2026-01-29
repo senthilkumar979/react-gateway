@@ -5,7 +5,9 @@ interface PersonasSectionProps {
   scenarioComponent?: React.ComponentType
 }
 
-export const PersonasSection = ({ scenarioComponent }: PersonasSectionProps) => {
+export const PersonasSection = ({
+  scenarioComponent,
+}: PersonasSectionProps) => {
   if (!scenarioComponent) {
     return (
       <AccordionSection
@@ -13,8 +15,8 @@ export const PersonasSection = ({ scenarioComponent }: PersonasSectionProps) => 
         description="Test components with different user personas and scenarios"
       >
         <p className="text-muted small">
-          No scenario component provided. Pass scenarioComponent prop to ReactGateway to use this
-          feature.
+          No scenario component provided. Pass scenarioComponent prop to
+          ReactGateway to use this feature.
         </p>
       </AccordionSection>
     )
