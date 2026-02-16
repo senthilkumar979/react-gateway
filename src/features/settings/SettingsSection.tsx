@@ -1,19 +1,15 @@
 import { IconClock } from '@/assets/IconClock'
 import { IconPlus } from '@/assets/IconPlus'
 import { AccordionSection } from '@/components/AccordionSection'
-import { useGateway } from '@/context/GatewayContext'
 import { useSettings } from '@/context/SettingsContext'
 import { PositionSettings } from './PositionSettings'
 import { TimeSettings } from './TimeSettings'
 
 export const SettingsSection = () => {
   const { settings, updateSettings } = useSettings()
-  const { setDrawerPosition, setTriggerPosition } = useGateway()
 
   const handlePositionChange = (position: 'left' | 'right') => {
     updateSettings({ position })
-    setDrawerPosition(position)
-    setTriggerPosition(position)
   }
 
   return (

@@ -20,6 +20,16 @@ createRoot(document.getElementById('root')!).render(
         onSnapshotChange={(snapshot) => {
           console.log('Snapshot changed:', snapshot)
         }}
+        snapshots={[
+          {
+            id: '1',
+            name: 'Snapshot 1',
+          },
+          {
+            id: '2',
+            name: 'Snapshot 2',
+          },
+        ]}
       />
     </ErrorBoundary>
   </StrictMode>,

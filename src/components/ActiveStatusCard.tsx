@@ -1,16 +1,16 @@
+import { IconCross } from '@/assets/IconCross'
+import { IconTrash } from '@/assets/IconTrash'
 import { useGateway } from '@/context/GatewayContext'
 import { useScenarios } from '@/context/ScenariosContext'
 import { useSettings } from '@/context/SettingsContext'
 import { useSnapshots } from '@/context/SnapshotsContext'
 import { useUIFlows } from '@/context/UIFlowsContext'
-import { IconCross } from '@/assets/IconCross'
-import { IconTrash } from '@/assets/IconTrash'
 import { Button } from 'react-bootstrap'
 
 export const ActiveStatusCard = () => {
   const { state, setActiveScenarioId } = useGateway()
   const { getScenario } = useScenarios()
-  const { getSnapshot, activeSnapshotId, setActiveSnapshotId } = useSnapshots()
+  const { activeSnapshotId, changeActiveSnapshotId } = useSnapshots()
   const { settings, updateSettings } = useSettings()
   const { isRecording, stopRecording } = useUIFlows()
 
@@ -18,23 +18,18 @@ export const ActiveStatusCard = () => {
     ? getScenario(state.activeScenarioId)
     : null
 
-  const activeSnapshot = activeSnapshotId ? getSnapshot(activeSnapshotId) : null
+  const activeSnapshot = activeSnapshotId
 
   const hasActiveSettings =
-    settings.timeFreeze.enabled ||
-    settings.timeOffset.enabled ||
-    settings.chaos.enabled
+    settings.timeFreeze.enabled || settings.timeOffset.enabled || settings.chaos
 
   const hasAnyActive =
-    activeScenario ||
-    activeSnapshot ||
-    hasActiveSettings ||
-    isRecording
+    activeScenario || activeSnapshot || hasActiveSettings || isRecording
 
   if (!hasAnyActive) return null
 
   const handleClearSnapshot = () => {
-    setActiveSnapshotId(null)
+    changeActiveSnapshotId(null)
   }
 
   const handleClearScenario = () => {
@@ -61,10 +56,7 @@ export const ActiveStatusCard = () => {
 
   const handleClearChaos = () => {
     updateSettings({
-      chaos: {
-        enabled: false,
-        throwError: false,
-      },
+      chaos: false,
     })
   }
 
@@ -73,7 +65,7 @@ export const ActiveStatusCard = () => {
   }
 
   const handleResetAll = () => {
-    setActiveSnapshotId(null)
+    changeActiveSnapshotId(null)
     setActiveScenarioId(null)
     updateSettings({
       timeFreeze: {
@@ -84,10 +76,7 @@ export const ActiveStatusCard = () => {
         enabled: false,
         offsetDays: 0,
       },
-      chaos: {
-        enabled: false,
-        throwError: false,
-      },
+      chaos: false,
     })
     if (isRecording) {
       stopRecording()
@@ -112,7 +101,7 @@ export const ActiveStatusCard = () => {
         {activeSnapshot && (
           <div className="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
             <div>
-              <strong>Snapshot:</strong> {activeSnapshot.name}
+              <strong>Snapshot:</strong> {activeSnapshotId}
             </div>
             <Button
               variant="outline-danger"
@@ -177,11 +166,11 @@ export const ActiveStatusCard = () => {
           </div>
         )}
 
-        {settings.chaos.enabled && (
+        {settings.chaos && (
           <div className="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
             <div>
               <strong>Chaos Mode:</strong>{' '}
-              {settings.chaos.throwError ? 'Throw Error' : 'Enabled'}
+              {settings.chaos ? 'Throw Error' : 'Enabled'}
             </div>
             <Button
               variant="outline-danger"

@@ -1,8 +1,8 @@
 import { PropsWithChildren, ReactNode } from 'react'
-import type { Snapshot } from './Snapshots.types'
 
 export interface ReactGatewayProps extends PropsWithChildren {
   clientApp: ReactNode
-  onSnapshotChange?: (snapshot: Snapshot) => void
+  onSnapshotChange?: (snapshot: string | null) => void
   responseList?: Record<string, unknown>[]
+  snapshots?: Record<string, string>[]
 }

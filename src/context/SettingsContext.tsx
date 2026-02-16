@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
-import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
 import type { Settings } from '@/types/Settings.types'
+import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/localStoragePersistence'
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
 interface SettingsContextValue {
   settings: Settings
@@ -27,13 +27,10 @@ interface SettingsProviderProps {
   initialPosition?: 'left' | 'right'
 }
 
-export const SettingsProvider = ({ children, initialPosition }: SettingsProviderProps) => {
+export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const [settings, setSettings] = useState<Settings>(() => {
     const saved = loadFromLocalStorage<Settings>('settings', defaultSettings)
-    if (initialPosition) {
-      return { ...saved, position: initialPosition }
-    }
-    return saved
+    return { ...saved }
   })
 
   useEffect(() => {

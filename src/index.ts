@@ -1,5 +1,5 @@
 export { ReactGateway } from './ReactGateway'
-export { ChaosBoundary } from './features/errorBoundary/ChaosBoundary'
+export { ChaosBoundary } from './features/chaosTesting/ChaosError'
 export { GatewayErrorBoundary } from './features/errorBoundary/GatewayErrorBoundary'
 export { useRenderTracking } from './hooks/useRenderTracking'
 

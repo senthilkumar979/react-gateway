@@ -1,11 +1,13 @@
-import { useGateway } from '@/context/GatewayContext'
 import { IconGrid } from '@/assets/IconGrid'
+import { useGateway } from '../context/GatewayContext'
+import { useSettings } from '../context/SettingsContext'
 
 export const GatewayTrigger = () => {
+  const { settings } = useSettings()
   const { state, setIsOpen } = useGateway()
 
   const positionClass =
-    state.triggerPosition === 'left'
+    settings.position === 'left'
       ? 'position-fixed bottom-0 start-0 m-3'
       : 'position-fixed bottom-0 end-0 m-3'
 

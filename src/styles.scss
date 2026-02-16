@@ -271,3 +271,15 @@ input::placeholder {
   font-size: 0.875rem;
   font-weight: 500;
 }
+
+[data-canvas-position='left'] {
+  [data-sileo-viewport][data-position$='center'] {
+    left: 20% !important;
+  }
+}
+
+[data-canvas-position='right'] {
+  [data-sileo-viewport][data-position$='center'] {
+    left: 80% !important;
+  }
+}

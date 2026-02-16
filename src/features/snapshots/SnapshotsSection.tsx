@@ -1,131 +1,59 @@
 import { AccordionSection } from '@/components/AccordionSection'
-import { useSnapshots } from '@/context/SnapshotsContext'
-import { FormLabel } from '@/ui/FormLabel'
-import { createSnapshot } from '@/utils/storageManager'
-import { useState } from 'react'
-import { SnapshotDropdown } from './SnapshotDropdown'
-import { IconPlus } from '../../assets/IconPlus'
-import { IconCross } from '../../assets/IconCross'
-import { IconCheck } from '../../assets/IconCheck'
 import { Button } from 'react-bootstrap'
+import { sileo } from 'sileo'
+import { IconReset } from '../../assets/IconReset'
+import { useSnapshots } from '../../context/SnapshotsContext'
+import { SnapshotDropdown } from './SnapshotDropdown'
 
-export const SnapshotsSection = () => {
-  const {
-    snapshots,
-    addSnapshot,
-    setActiveSnapshotId,
-    activeSnapshotId,
-    deleteSnapshot,
-  } = useSnapshots()
-  const [snapshotName, setSnapshotName] = useState('')
-  const [showForm, setShowForm] = useState(false)
+export const SnapshotsSection = ({
+  snapshots,
+  onSnapshotChange,
+}: {
+  snapshots: Record<string, string>[]
+  onSnapshotChange: (snapshot: string | null) => void
+}) => {
+  const { changeActiveSnapshotId } = useSnapshots()
 
-  const handleCreate = () => {
-    if (!snapshotName.trim()) return
-
-    const snapshot = createSnapshot(snapshotName.trim())
-    addSnapshot({
-      name: snapshot.name,
-      localStorage: snapshot.localStorage,
-      sessionStorage: snapshot.sessionStorage,
-      cookies: snapshot.cookies,
+  const resetActiveSnapshot = () => {
+    onSnapshotChange(null)
+    changeActiveSnapshotId(null)
+    sileo.success({
+      title: `Snapshot reset`,
+      description: `The active snapshot has been reset.`,
+      icon: '🔄',
+      duration: 3000,
+      fill: 'black',
+      styles: {
+        title: 'text-white!',
+        description: 'text-white/75!',
+      },
+      autopilot: {
+        expand: 500,
+        collapse: 2500,
+      },
     })
-    setSnapshotName('')
-    setShowForm(false)
-  }
-
-  const handleSelect = (id: string | null) => {
-    setActiveSnapshotId(id)
-  }
-
-  const handleDelete = (id: string) => {
-    deleteSnapshot(id)
-    setShowForm(false)
-    setSnapshotName('')
-  }
-
-  const handleSnapshotNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    const regex = /^[a-zA-Z][a-zA-Z0-9 _()\-\s]{0,50}$/
-    if (value === '' || regex.test(value)) {
-      setSnapshotName(value)
-    }
-  }
-
-  const handleSnapshotNameKeyPress = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
-    if (e.key === 'Enter') {
-      const regex = /^[a-zA-Z][a-zA-Z0-9 _()\-\s]{2,50}$/
-      if (regex.test(snapshotName)) {
-        handleCreate()
-      }
-    }
   }
 
   return (
     <AccordionSection
       title="Snapshots"
-      description="Create a snapshot to set your context, storage, and cookies state"
+      description="Use a snapshot to set your context, storage, and cookies state"
     >
       <div className="">
-        {!showForm ? (
-          <div className="d-flex justify-content-end align-items-center">
-            <button
-              className="btn btn-outline-primary btn-sm"
-              onClick={() => setShowForm(true)}
-            >
-              <IconPlus width={16} height={16} />
-              Add Snapshot
-            </button>
-          </div>
-        ) : (
-          <div className="mb-3">
-            <FormLabel
-              htmlFor="snapshot-name"
-              description="Create a snapshot to set your context, storage, and cookies state"
-            >
-              Create Snapshot
-            </FormLabel>
-            <div className="input-group">
-              <input
-                id="snapshot-name"
-                type="text"
-                className="form-control"
-                value={snapshotName}
-                onChange={handleSnapshotNameChange}
-                placeholder="Snapshot name"
-                minLength={3}
-                maxLength={50}
-                pattern="[a-zA-Z][a-zA-Z0-9 _()\-\s]{2,50}"
-                onKeyPress={handleSnapshotNameKeyPress}
-                autoFocus
-              />
-              <Button size="sm" variant="primary" onClick={handleCreate}>
-                <IconCheck width={16} height={16} />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline-secondary"
-                onClick={() => {
-                  setShowForm(false)
-                  setSnapshotName('')
-                }}
-              >
-                <IconCross width={16} height={16} />
-              </Button>
-            </div>
-          </div>
-        )}
+        <div className="d-flex justify-content-end align-items-center">
+          <Button
+            variant="outline-info"
+            size="sm"
+            onClick={resetActiveSnapshot}
+          >
+            <IconReset />
+            Reset Active Snapshot
+          </Button>
+        </div>
       </div>
       {snapshots.length > 0 && (
         <div className="mb-3">
-          <SnapshotDropdown
-            snapshots={snapshots}
-            selectedId={activeSnapshotId}
-            onSelect={handleSelect}
-            onDelete={handleDelete}
-          />
+          <SnapshotDropdown snapshots={snapshots} onSelect={onSnapshotChange} />
         </div>
       )}
     </AccordionSection>

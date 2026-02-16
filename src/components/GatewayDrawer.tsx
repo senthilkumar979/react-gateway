@@ -1,5 +1,6 @@
-import { useEffect, type ReactNode } from 'react'
 import { useGateway } from '@/context/GatewayContext'
+import { useEffect, type ReactNode } from 'react'
+import { useSettings } from '../context/SettingsContext'
 
 interface GatewayDrawerProps {
   children: ReactNode
@@ -7,6 +8,7 @@ interface GatewayDrawerProps {
 
 export const GatewayDrawer = ({ children }: GatewayDrawerProps) => {
   const { state, setIsOpen } = useGateway()
+  const { settings } = useSettings()
 
   useEffect(() => {
     if (state.isOpen) {
@@ -19,7 +21,7 @@ export const GatewayDrawer = ({ children }: GatewayDrawerProps) => {
   return (
     <>
       <div
-        className={`offcanvas offcanvas-${state.drawerPosition === 'left' ? 'start' : 'end'} ${state.isOpen ? 'show' : ''}`}
+        className={`offcanvas offcanvas-${settings.position === 'left' ? 'start' : 'end'} ${state.isOpen ? 'show' : ''}`}
         style={{ visibility: state.isOpen ? 'visible' : 'hidden' }}
         tabIndex={-1}
         aria-labelledby="gateway-drawer-label"
