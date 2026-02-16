@@ -6,7 +6,7 @@ import { useGateway } from '../../context/GatewayContext'
 import { ScenarioDetailView } from './ScenarioDetailView'
 import { Scenario } from '../../types/Scenarios.types'
 
-export const ScenarioAccordion = ({ onEdit }: { onEdit: (scenario: Scenario) => void }) => {
+export const ScenarioAccordion = ({ onEdit, responseList }: { onEdit: (scenario: Scenario) => void, responseList: Record<string, unknown>[] }) => {
   const { scenarios } = useScenarios()
   const [activeKey, setActiveKey] = useState<string | null>(null)
   const { state, setActiveScenarioId } = useGateway()
@@ -73,7 +73,7 @@ export const ScenarioAccordion = ({ onEdit }: { onEdit: (scenario: Scenario) => 
               </div>
             </Accordion.Header>
             <Accordion.Body>
-              <ScenarioDetailView scenario={scenario} onEdit={onEdit} />
+              <ScenarioDetailView scenario={scenario} onEdit={onEdit} responseList={responseList} />
             </Accordion.Body>
           </Accordion.Item>
         )

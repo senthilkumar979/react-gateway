@@ -6,9 +6,11 @@ import { ScenarioActions } from './ScenarioActions'
 export const ScenarioDetailView = ({
   scenario,
   onEdit,
+  responseList,
 }: {
   scenario: Scenario
   onEdit: (scenario: Scenario) => void
+  responseList: Record<string, unknown>[]
 }) => {
   return (
     <div>
@@ -23,6 +25,7 @@ export const ScenarioDetailView = ({
           key={request.name}
           isReadonly={true}
           request={request}
+          responseList={responseList}
         />
       ))}
     </div>

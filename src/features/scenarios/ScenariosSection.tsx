@@ -129,7 +129,7 @@ export const ScenariosSection = ({
           />
         </div>
       )}
-      <ScenarioAccordion onEdit={handleEdit} />
+      <ScenarioAccordion onEdit={handleEdit} responseList={responseList}/>
     </AccordionSection>
   )
 }
